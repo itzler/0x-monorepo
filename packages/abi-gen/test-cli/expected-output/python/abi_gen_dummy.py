@@ -81,7 +81,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> None:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -103,7 +104,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> str:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -125,7 +127,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> None:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -143,7 +146,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> None:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -161,7 +165,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> InnerStructDescription:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -179,7 +184,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> None:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -198,7 +204,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> None:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -218,7 +225,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> int:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         # safeguard against fractional inputs
         x = int(x)
@@ -239,7 +247,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> int:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -258,7 +267,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> None:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -277,7 +287,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> SomeBytesAnIntegerADynamicArrayOfBytesAString:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -295,7 +306,8 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> int:
         """Execute underlying, same-named contract method.
 
-        
+        :param tx_params: transaction parameters
+
         """
         func = self._get_contract_instance(
             self.contract_address
@@ -311,7 +323,7 @@ class AbiGenDummy(BaseContractWrapper):
     ) -> Tuple[AttributeDict]:
         """Get log entry for Event event.
 
-        :param tx_hash: hash of transaction emitting Event event.
+        :param tx_hash: hash of transaction emitting Event event
         """
         tx_receipt = self._web3_eth.getTransactionReceipt(tx_hash)
         return (
