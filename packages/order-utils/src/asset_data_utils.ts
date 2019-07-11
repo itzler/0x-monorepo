@@ -302,6 +302,7 @@ export const assetDataUtils = {
                 }. Got ${assetData.length}`,
             );
         }
+        assetDataUtils.assertWordAlignedAssetData(assetData);
         const assetProxyId = assetDataUtils.decodeAssetProxyId(assetData);
         if (assetProxyId !== AssetProxyId.ERC20) {
             throw new Error(
@@ -323,6 +324,7 @@ export const assetDataUtils = {
                 }. Got ${assetData.length}`,
             );
         }
+        assetDataUtils.assertWordAlignedAssetData(assetData);
         const assetProxyId = assetDataUtils.decodeAssetProxyId(assetData);
         if (assetProxyId !== AssetProxyId.ERC721) {
             throw new Error(
@@ -337,8 +339,22 @@ export const assetDataUtils = {
      * @param assetData Hex encoded assetData string
      */
     assertIsERC1155AssetData(assetData: string): void {
-        // If the asset data is correctly decoded then it is valid.
-        assetDataUtils.decodeERC1155AssetData(assetData);
+        if (assetData.length < constants.ERC1155_ASSET_DATA_MIN_CHAR_LENGTH_WITH_PREFIX) {
+            throw new Error(
+                `Could not decode ERC1155 Proxy Data. Expected length of encoded data to be at least ${
+                    constants.ERC1155_ASSET_DATA_MIN_CHAR_LENGTH_WITH_PREFIX
+                }. Got ${assetData.length}`,
+            );
+        }
+        assetDataUtils.assertWordAlignedAssetData(assetData);
+        const assetProxyId = assetDataUtils.decodeAssetProxyId(assetData);
+        if (assetProxyId !== AssetProxyId.ERC1155) {
+            throw new Error(
+                `Could not decode ERC1155 assetData. Expected assetProxyId to be ERC1155 (${
+                    AssetProxyId.ERC1155
+                }), but got ${assetProxyId}`,
+            );
+        }
     },
     /**
      * Throws if the length or assetProxyId are invalid for the MultiAssetProxy.
@@ -352,6 +368,7 @@ export const assetDataUtils = {
                 }. Got ${assetData.length}`,
             );
         }
+        assetDataUtils.assertWordAlignedAssetData(assetData);
         const assetProxyId = assetDataUtils.decodeAssetProxyId(assetData);
         if (assetProxyId !== AssetProxyId.MultiAsset) {
             throw new Error(
@@ -366,7 +383,34 @@ export const assetDataUtils = {
      * @param assetData Hex encoded assetData string
      */
     assertIsStaticCallAssetData(assetData: string): void {
-        assetDataUtils.decodeStaticCallAssetData(assetData);
+        if (assetData.length < constants.STATIC_CALL_ASSET_DATA_MIN_CHAR_LENGTH_WITH_PREFIX) {
+            throw new Error(
+                `Could not decode StaticCall Proxy Data. Expected length of encoded data to be at least ${
+                    constants.STATIC_CALL_ASSET_DATA_MIN_CHAR_LENGTH_WITH_PREFIX
+                }. Got ${assetData.length}`,
+            );
+        }
+        assetDataUtils.assertWordAlignedAssetData(assetData);
+        const assetProxyId = assetDataUtils.decodeAssetProxyId(assetData);
+        if (assetProxyId !== AssetProxyId.StaticCall) {
+            throw new Error(
+                `Could not decode StaticCall assetData. Expected assetProxyId to be StaticCall (${
+                    AssetProxyId.StaticCall
+                }), but got ${assetProxyId}`,
+            );
+        }
+    },
+    /**
+     * Throws if the assetData is not padded to 32 bytes.
+     * @param assetData Hex encoded assetData string
+     */
+    assertWordAlignedAssetData(assetData: string): void {
+        const charsIn32Bytes = 64;
+        if ((assetData.length - constants.SELECTOR_CHAR_LENGTH_WITH_PREFIX) % charsIn32Bytes !== 0) {
+            throw new Error(
+                `assetData must be word aligned. ${(assetData.length - 2) / 2} is not a valid byte length.`,
+            );
+        }
     },
     /**
      * Throws if the length or assetProxyId are invalid for the corresponding AssetProxy.
@@ -414,6 +458,9 @@ export const assetDataUtils = {
             case AssetProxyId.MultiAsset:
                 const multiAssetData = assetDataUtils.decodeMultiAssetData(assetData);
                 return multiAssetData;
+            case AssetProxyId.StaticCall:
+                const staticCallData = assetDataUtils.decodeStaticCallAssetData(assetData);
+                return staticCallData;
             default:
                 throw new Error(`Unrecognized asset proxy id: ${assetProxyId}`);
         }
