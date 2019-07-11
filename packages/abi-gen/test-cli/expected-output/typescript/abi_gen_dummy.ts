@@ -23,6 +23,17 @@ import { assert } from '@0x/assert';
 import * as ethers from 'ethers';
 // tslint:enable:no-unused-variable
 
+export type AbiGenDummyEventArgs =
+    | AbiGenDummyEventEventArgs;
+
+export enum AbiGenDummyEvents {
+    Event = 'Event',
+}
+
+export interface AbiGenDummyEventEventArgs extends DecodedLogArgs {
+    param: number;
+}
+
 
 /* istanbul ignore next */
 // tslint:disable:no-parameter-reassignment
@@ -571,6 +582,20 @@ export class AbiGenDummyContract extends BaseContract {
                 payable: false,
                 stateMutability: 'pure',
                 type: 'function',
+            },
+            { 
+                anonymous: false,
+                inputs: [
+                    {
+                        name: 'param',
+                        type: 'uint8',
+                        indexed: false,
+                    },
+                ],
+                name: 'Event',
+                outputs: [
+                ],
+                type: 'event',
             },
         ] as ContractAbi;
         return abi;
