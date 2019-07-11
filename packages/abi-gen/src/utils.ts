@@ -104,7 +104,9 @@ export const utils = {
         if (solType.match(trailingArrayRegex)) {
             const arrayItemSolType = solType.replace(trailingArrayRegex, '');
             const arrayItemPyType = utils.solTypeToPyType(arrayItemSolType, components);
-            const arrayPyType = `Array[${arrayItemPyType}]`;
+            const arrayPyType = `List[${arrayItemPyType}${
+                arrayItemSolType === 'tuple' ? '  # noqa: E501 (line too long)\n' : ''
+            }]`;
             return arrayPyType;
         } else {
             const solTypeRegexToPyType = [
@@ -122,13 +124,7 @@ export const utils = {
             }
             const TUPLE_TYPE_REGEX = '^tuple$';
             if (solType.match(TUPLE_TYPE_REGEX)) {
-                const componentsType = _.map(components, component => {
-                    const componentValueType = utils.solTypeToPyType(component.type, component.components);
-                    const componentType = `'${component.name}': ${componentValueType}`;
-                    return componentType;
-                });
-                const pyType = `TypedDict('${solType}(${components})', {${componentsType.join(',')}}`;
-                return pyType;
+                return utils.makePythonTupleName(components as DataItem[]);
             }
             throw new Error(`Unknown Solidity type found: ${solType}`);
         }
@@ -185,6 +181,29 @@ export const utils = {
                 throw err;
             }
         }
+    },
+    /**
+     * simply concatenate all of the names of the components, and convert that
+     * concatenation into PascalCase to conform to Python convention.
+     */
+    makePythonTupleName(tupleComponents: DataItem[]): string {
+        return changeCase.pascal(_.map(tupleComponents, component => component.name).join('_'));
+    },
+    /**
+     * @returns a string that is a Python code snippet that's intended to be
+     * used as the second parameter to a TypedDict() insatnatiation; value
+     * looks like "{ 'python_dict_key': python_type, ... }".
+     */
+    makePythonTupleClassBody(tupleComponents: DataItem[]): string {
+        let toReturn: string = '';
+        for (const tupleComponent of tupleComponents) {
+            toReturn = `${toReturn}\n\n    ${changeCase.snake(tupleComponent.name)}: ${utils.solTypeToPyType(
+                tupleComponent.type,
+                tupleComponent.components,
+            )}${tupleComponent.type === 'tuple' ? '  # noqa: E501 (line too long)' : ''}`;
+        }
+        toReturn = `${toReturn}`;
+        return toReturn;
     },
     /**
      * used to generate Python-parseable identifier names for parameters to

@@ -1,14 +1,43 @@
 """Generated wrapper for AbiGenDummy Solidity contract."""
 
 import json
-from typing import Optional, Tuple, Union
+from typing import (  # pylint: disable=unused-import
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
 
+from mypy_extensions import TypedDict  # pylint: disable=unused-import
 from hexbytes import HexBytes
 from web3.datastructures import AttributeDict
 from web3.providers.base import BaseProvider
 
 from zero_ex.contract_wrappers._base_contract_wrapper import BaseContractWrapper
 from zero_ex.contract_wrappers.tx_params import TxParams
+
+
+class InnerStructDescription(  # noqa: E501 (line too long)
+    TypedDict
+):
+    """Python representation of a tuple or struct."""
+
+    inner_struct: SomeBytesAnIntegerADynamicArrayOfBytesAString  # noqa: E501 (line too long)
+
+    description: str
+
+class SomeBytesAnIntegerADynamicArrayOfBytesAString(  # noqa: E501 (line too long)
+    TypedDict
+):
+    """Python representation of a tuple or struct."""
+
+    some_bytes: bytes
+
+    an_integer: int
+
+    a_dynamic_array_of_bytes: List[bytes]
+
+    a_string: str
 
 
 class AbiGenDummy(BaseContractWrapper):
@@ -123,6 +152,24 @@ class AbiGenDummy(BaseContractWrapper):
             view_only=True
         )
 
+    def nested_struct_output(
+        self,
+        tx_params: Optional[TxParams] = None,
+    ) -> InnerStructDescription:
+        """Execute underlying, same-named contract method.
+
+        
+        """
+        func = self._get_contract_instance(
+            self.contract_address
+        ).functions.nestedStructOutput(
+        )
+        return self._invoke_function_call(
+            func=func,
+            tx_params=tx_params,
+            view_only=True
+        )
+
     def require_with_constant(
         self,
         tx_params: Optional[TxParams] = None,
@@ -134,6 +181,26 @@ class AbiGenDummy(BaseContractWrapper):
         func = self._get_contract_instance(
             self.contract_address
         ).functions.requireWithConstant(
+        )
+        return self._invoke_function_call(
+            func=func,
+            tx_params=tx_params,
+            view_only=True
+        )
+
+    def struct_input(
+        self,
+        s: SomeBytesAnIntegerADynamicArrayOfBytesAString,  # noqa: E501 (line too long)
+        tx_params: Optional[TxParams] = None,
+    ) -> None:
+        """Execute underlying, same-named contract method.
+
+        
+        """
+        func = self._get_contract_instance(
+            self.contract_address
+        ).functions.structInput(
+            s
         )
         return self._invoke_function_call(
             func=func,
@@ -181,6 +248,44 @@ class AbiGenDummy(BaseContractWrapper):
             view_only=True
         )
 
+    def nested_struct_input(
+        self,
+        n: InnerStructDescription,  # noqa: E501 (line too long)
+        tx_params: Optional[TxParams] = None,
+    ) -> None:
+        """Execute underlying, same-named contract method.
+
+        
+        """
+        func = self._get_contract_instance(
+            self.contract_address
+        ).functions.nestedStructInput(
+            n
+        )
+        return self._invoke_function_call(
+            func=func,
+            tx_params=tx_params,
+            view_only=True
+        )
+
+    def struct_output(
+        self,
+        tx_params: Optional[TxParams] = None,
+    ) -> SomeBytesAnIntegerADynamicArrayOfBytesAString:
+        """Execute underlying, same-named contract method.
+
+        
+        """
+        func = self._get_contract_instance(
+            self.contract_address
+        ).functions.structOutput(
+        )
+        return self._invoke_function_call(
+            func=func,
+            tx_params=tx_params,
+            view_only=True
+        )
+
     def pure_function_with_constant(
         self,
         tx_params: Optional[TxParams] = None,
@@ -216,5 +321,5 @@ class AbiGenDummy(BaseContractWrapper):
     def abi():
         """Return the ABI to the underlying contract."""
         return json.loads(
-            '[{"constant":true,"inputs":[],"name":"simpleRequire","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"},{"name":"v","type":"uint8"},{"name":"r","type":"bytes32"},{"name":"s","type":"bytes32"}],"name":"ecrecoverFn","outputs":[{"name":"signerAddress","type":"address"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"revertWithConstant","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"simpleRevert","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"requireWithConstant","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"x","type":"uint256"}],"name":"simplePureFunctionWithInput","outputs":[{"name":"sum","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"simplePureFunction","outputs":[{"name":"result","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"pureFunctionWithConstant","outputs":[{"name":"someConstant","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"param","type":"uint8"}],"name":"Event","type":"event"}]'  # noqa: E501 (line-too-long)
+            '[{"constant":true,"inputs":[],"name":"simpleRequire","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"},{"name":"v","type":"uint8"},{"name":"r","type":"bytes32"},{"name":"s","type":"bytes32"}],"name":"ecrecoverFn","outputs":[{"name":"signerAddress","type":"address"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"revertWithConstant","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"simpleRevert","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"nestedStructOutput","outputs":[{"components":[{"components":[{"name":"someBytes","type":"bytes"},{"name":"anInteger","type":"uint32"},{"name":"aDynamicArrayOfBytes","type":"bytes[]"},{"name":"aString","type":"string"}],"name":"innerStruct","type":"tuple"},{"name":"description","type":"string"}],"name":"","type":"tuple"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"requireWithConstant","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"components":[{"name":"someBytes","type":"bytes"},{"name":"anInteger","type":"uint32"},{"name":"aDynamicArrayOfBytes","type":"bytes[]"},{"name":"aString","type":"string"}],"name":"s","type":"tuple"}],"name":"structInput","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"x","type":"uint256"}],"name":"simplePureFunctionWithInput","outputs":[{"name":"sum","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"simplePureFunction","outputs":[{"name":"result","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"components":[{"components":[{"name":"someBytes","type":"bytes"},{"name":"anInteger","type":"uint32"},{"name":"aDynamicArrayOfBytes","type":"bytes[]"},{"name":"aString","type":"string"}],"name":"innerStruct","type":"tuple"},{"name":"description","type":"string"}],"name":"n","type":"tuple"}],"name":"nestedStructInput","outputs":[],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"structOutput","outputs":[{"components":[{"name":"someBytes","type":"bytes"},{"name":"anInteger","type":"uint32"},{"name":"aDynamicArrayOfBytes","type":"bytes[]"},{"name":"aString","type":"string"}],"name":"s","type":"tuple"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"pureFunctionWithConstant","outputs":[{"name":"someConstant","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"param","type":"uint8"}],"name":"Event","type":"event"}]'  # noqa: E501 (line-too-long)
         )
